@@ -13,22 +13,15 @@ def get_table(dynamodb=None):
         if URL:
             print('URL dynamoDB:'+URL)
             boto3.client = functools.partial(boto3.client, endpoint_url=URL)
-            boto3.resource = functools.partial(boto3.resource,
-                                               endpoint_url=URL)
+            boto3.resource = functools.partial(boto3.resource, endpoint_url=URL)
         dynamodb = boto3.resource("dynamodb")
-    # fetch todo from the database
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     return table
-
 
 def get_item(key, dynamodb=None):
     table = get_table(dynamodb)
     try:
-        result = table.get_item(
-            Key={
-                'id': key
-            }
-        )
+        result = table.get_item( Key={ 'id': key } )
 
     except ClientError as e:
         print(e.response['Error']['Message'])
@@ -149,12 +142,9 @@ def create_todo_table(dynamodb):
 
 
 def get_translation(text, language, dynamodb=None):
-    translator = boto3.client(service_name='translate',
-                              region_name='us-east-1')
+    translator = boto3.client(service_name='translate', region_name='us-east-1')
     try:
-        translation = translator.translate_text(Text=text,
-                                                SourceLanguageCode="auto",
-                                                TargetLanguageCode=language)
+        translation = translator.translate_text(Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
     except ClientError as e:  # pragma: no cover
         print(e.response['Error']['Message'])
     else:
