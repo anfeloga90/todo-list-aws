@@ -6,6 +6,7 @@ from moto import mock_dynamodb2
 import sys
 import os
 import json
+from botocore.exceptions import ClientError
 
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
@@ -167,27 +168,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import delete_item
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
+            
         print ('End: test_delete_todo_error')
         
-    def test_get_table(self):
-        print ('---------------------')
-        print ('Start: test_get_table')
-        from src.todoList import get_table
-        # Testing file functions
-        self.assertTrue(self.table)
-        print('Table name:' + self.table.name)
-        tableName = os.environ['DYNAMODB_TABLE'];
-        # check if the table name is 'ToDo'
-        self.assertEqual(tableName, self.table.name)
-        print ('--------------- *****End: test_get_table')
-        
-    def test_get_table_error(self):
-        print ('---------------------')
-        print ('Start: test_get_table_error')
-        from src.todoList import get_table
-        # Testing file functions
-        self.assertRaises(Exception, get_table(self.dynamodb))
-        print ('--------------- *****End: test_get_table_error')
 
 # create
 # create_todo_table

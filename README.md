@@ -64,7 +64,7 @@ sam deploy template.yaml --config-env staging
 ```
 Ejecutar el siguiente comando para el entorno de **producción**
 ```bash
-sam deploy template.yaml --config-env prod
+sam deploy template.yaml --config-env production
 ```
 
 ## Despliegue manual de la aplicación SAM en local
