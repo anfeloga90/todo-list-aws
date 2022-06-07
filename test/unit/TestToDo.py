@@ -181,7 +181,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_translation
         try:
             translation = get_translation(self.text, "en")
-            self.assertEqual(self.text, "Texto a traducir test")
+            self.assertEqual(self.text, "Aprender DevOps y Cloud en la UNIR")
         except ClientError as e:  
             print(e.response['Error']['Message']) 
         else:
