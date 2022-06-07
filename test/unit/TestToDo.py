@@ -8,7 +8,22 @@ import os
 import json
 from botocore.exceptions import ClientError
 
-
+@mock_dynamodb2
+def mock_table(self):
+    print ('---------------------')
+    print ('Mocking table')
+    from src.todoList import get_table
+    from unittest.mock import Mock
+    
+    self.table = get_table(self.dynamodb)
+    self.table = Mock()
+    print ('Table Mocked')
+    
+    from botocore.exceptions import ClientError
+    self.dbException = ClientError({'Error': {'Code': 'MockedException', 'Message': 'This is a Mock'}},
+        os.environ['DYNAMODB_TABLE'])
+    print ('DB mock Exception ready')
+    
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -24,6 +39,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.text = "Aprender DevOps y Cloud en la UNIR"
         from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
+        self.dbException = None
         #self.table_local = create_todo_table()
         print ('End: setUp')
 
@@ -169,9 +185,10 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import delete_item
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
-        with self.assertRaises(ClientError) as e:
-            self.assertTrue('Boto3 Exception' in e.exception)
-            
+        mock_table(self)
+        self.table.delete_item.side_effect = self.dbException
+        print ('Table mocked for delete_item()')
+        self.assertRaises(Exception, delete_item('id', self.dynamodb))
         print ('End: test_delete_todo_error')
         
     def test_get_translation(self):
