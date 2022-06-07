@@ -163,6 +163,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertTrue(len(get_items(self.dynamodb)) == 0)
         self.failureException('No se puede eliminar un item')
         self.assertRaises(Exception,delete_item(idItem,self.dynamodb))
+        self.assertRaises(TypeError,delete_item("",self.dynamodb))
         print ('End: test_delete_todo')
 
     def test_delete_todo_error(self):
