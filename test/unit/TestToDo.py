@@ -108,6 +108,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         responseGet = get_item(idItem,self.dynamodb)
         print ('Response Get:' + str(responseGet))
         self.assertEqual(self.text,responseGet['text'])
+        mock_table(self)
+        self.table.get_item.side_effect = self.dbException
+        self.assertRaises(Exception, get_item(self.text, self.dynamodb))
         print ('End: test_get_todo')
     
     def test_list_todo(self):
