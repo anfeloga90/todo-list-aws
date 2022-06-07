@@ -169,6 +169,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import delete_item
         # Testing file functions
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
+        with self.assertRaises(ClientError) as e:
+            self.assertTrue('Boto3 Exception' in e.exception)
             
         print ('End: test_delete_todo_error')
         
@@ -178,7 +180,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         from src.todoList import get_translation
         translation = get_translation(self.text, "en")
         self.assertEqual(self.text, "Aprender DevOps y Cloud en la UNIR")
-        self.assertEqual(translation, "Texto a traducir test")
 
         print ('End: test_get_translation')
 

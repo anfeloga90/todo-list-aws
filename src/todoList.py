@@ -145,7 +145,7 @@ def get_translation(text, language, dynamodb=None):
     translator = boto3.client(service_name='translate', region_name='us-east-1')
     try:
         translation = translator.translate_text(Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
-    except ClientError as e:  # pragma: no cover
+    except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         text = translation.get('TranslatedText')
