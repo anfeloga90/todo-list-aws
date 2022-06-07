@@ -8,6 +8,7 @@ import os
 import json
 from botocore.exceptions import ClientError
 
+
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
     def setUp(self):
@@ -171,6 +172,14 @@ class TestDatabaseFunctions(unittest.TestCase):
             
         print ('End: test_delete_todo_error')
         
+    def test_get_translation(self):
+        print ('---------------------')
+        print ('Start: test_get_translation')
+        from src.todoList import get_translation
+        translation = get_translation(self.text, "en")
+        self.assertEqual(self.text, "Texto a traducir test")
+        print ('End: test_get_translation')
+
 
 # create
 # create_todo_table
