@@ -160,6 +160,9 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(Exception,update_item(updated_text,"","false",self.dynamodb))
         self.assertRaises(TypeError,update_item("", self.uuid,"false",self.dynamodb))
         self.assertRaises(Exception,update_item(updated_text,self.uuid,"",self.dynamodb))
+        mock_table(self)
+        self.table.put_item.side_effect = self.dbException
+        self.assertRaises(Exception, put_item('id', self.dynamodb))
         print ('End: test_update_todo_error')
 
     def test_delete_todo(self):
