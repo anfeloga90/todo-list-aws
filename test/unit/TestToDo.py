@@ -161,6 +161,7 @@ class TestDatabaseFunctions(unittest.TestCase):
         delete_item(idItem, self.dynamodb)
         print ('Item deleted succesfully')
         self.assertTrue(len(get_items(self.dynamodb)) == 0)
+        self.failureException('No se puede eliminar un item')
         print ('End: test_delete_todo')
 
     def test_delete_todo_error(self):
@@ -176,8 +177,15 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('---------------------')
         print ('Start: test_get_translation')
         from src.todoList import get_translation
-        translation = get_translation(self.text, "en")
-        self.assertEqual(self.text, "Texto a traducir test")
+        try:
+            translation = get_translation(self.text, "en")
+            self.assertEqual(self.text, "Texto a traducir test")
+        except ClientError as e:  
+            print(e.response['Error']['Message']) 
+        else:
+            text = translation.get('TranslatedText') 
+            print('Result get_translation:'+str(self.text)) 
+            return text 
         print ('End: test_get_translation')
 
 
