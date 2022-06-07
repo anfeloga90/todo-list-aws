@@ -6,7 +6,8 @@ import todoList
 def translate(event, context):
     # create a response
     item = todoList.get_item(event['pathParameters']['id'])
-    translation = todoList.get_translation(item['text'], event['pathParameters']['language'])
+    translation = todoList.get_translation(
+        item['text'], event['pathParameters']['language'])
     if translation:
         response = {
             "statusCode": 200,
@@ -15,6 +16,5 @@ def translate(event, context):
     else:
         response = {
             "statusCode": 404,
-            "body": ""
-        }
+            "body": "" }
     return response
